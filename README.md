@@ -101,13 +101,12 @@ ollama run mistral
 docker run -d -p 11434:11434 -v ~/.ollama:/root/.ollama ollama/ollama
 
 ## Project Structure
-
+```
 investment_decisions_AI/
 ├── app/
 │   └── streamlit_ui.py
 ├── services/
 │   ├── ingestion.py
-│   ├── validation.py
 │   ├── concentration_analysis.py
 │   └── insights_engine.py
 ├── data/
@@ -118,3 +117,4 @@ investment_decisions_AI/
 ├── Dockerfile
 ├── docker-compose.yml (optional)
 └── README.md
+```
