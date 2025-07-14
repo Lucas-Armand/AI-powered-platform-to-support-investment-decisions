@@ -86,6 +86,7 @@ Step	What we do	What we mock
 -> app/
 --> services/
 --> data/ # Saves to
+localhost:8501
 
 * Second container runs Ollama with Mistral model
 Exposes http://localhost:11434
@@ -128,3 +129,17 @@ investment_decisions_AI/
 ├── docker-compose.yml 
 └── README.md
 ```
+
+# Progress Log
+DAY 1 – Setup & Foundation
+ * Defined problem scope and ideal architecture based on the challenge prompt
+ * Wrote full README with long-term vs POC architecture and development strategy
+ * Created initial folder structure (app/, services/, data/, etc.)
+ * Built a minimal working Streamlit UI with 3 navigable screens (Upload, Normalize, Analyze)
+ * Integrated Docker with local volume for file persistence
+ * Wrote and passed initial Streamlit UI tests using streamlit.testing.v1
+        Validated sidebar navigation and default rendering
+        Learned limitations of testing file_uploader, switched to session-based assertions
+ * Tested logic for upload and UI transitions
+ * Started planning ingestion and normalization logic
+
