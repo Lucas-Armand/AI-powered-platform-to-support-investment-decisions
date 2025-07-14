@@ -72,8 +72,9 @@ We adopt a baby-steps strategy with focus on:
 
 ## Incremental Steps
 Step	What we do	What we mock
-* [ ] Setup	Create modular structure + Docker	Use dummy for everything
-* [ ] Upload & preview	Upload Excel, read with Pandas, show preview	Skip schema inference logic
+* [x] (13/07/2025) Setup	Create modular structure + Docker	Use dummy for everything
+* [x] (13/07/2025) Upload & preview	
+* [ ] Upload Excel, read with Pandas, show preview	Skip schema inference logic
 * [ ] Schema inference	Detect column types, missing data, categories	Use static rules for types
 * [ ] Concentration analysis	Aggregate and calculate top 10/20/50% per period	Use one static period (e.g., year)
 * [ ] Insight generation	Integrate with Ollama via API	Use static prompt/response

@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    command: streamlit run app/streamlit_ui.py --server.port=8501 --server.enableCORS=false
+
+  tests:
+    build: .
+    volumes:
+      - .:/app
+    command: pytest tests/
+
