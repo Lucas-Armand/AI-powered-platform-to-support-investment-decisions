@@ -90,15 +90,20 @@ Step	What we do	What we mock
 Exposes http://localhost:11434
 Communicates via REST from main app
 
-## Example:
+## How to use:
+### Build container:
+```bash
+docker-compose build
+```
+### Run app:
+```bash
+docker-compose up app
+```
 
-### Main App
-docker build -t keye-app .
-docker run -p 8501:8501 -v $(pwd)/data:/app/data keye-app
-
-### LLM (Optional)
-ollama run mistral
-docker run -d -p 11434:11434 -v ~/.ollama:/root/.ollama ollama/ollama
+### Run tests:
+```bash
+docker-compose run --rm tests
+```
 
 ## Project Structure
 ```
@@ -113,8 +118,12 @@ investment_decisions_AI/
 │   ├── raw/
 │   ├── processed/
 │   └── logs/
+├── tests/
+│   ├── test1.py
+│   ├── test2.py
+│   └── ...
 ├── requirements.txt
 ├── Dockerfile
-├── docker-compose.yml (optional)
+├── docker-compose.yml 
 └── README.md
 ```
