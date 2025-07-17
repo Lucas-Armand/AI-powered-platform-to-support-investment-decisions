@@ -7,12 +7,28 @@ services:
       - "8501:8501"
     volumes:
       - .:/app
-    command: streamlit run app/streamlit_ui.py --server.port=8501 --server.enableCORS=false
+    command: streamlit run main.py --server.port=8501 --server.enableCORS=false
+    environment:
+    - PYTHONPATH=/app
 
   tests:
     build: .
     volumes:
       - .:/app
-    command: pytest tests/
+    command: pytest -s -vv tests/
     environment:
       - PYTHONPATH=/app
+
+  llm:
+    build:
+      context: .
+      dockerfile: llm.Dockerfile
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    entrypoint: >
+      /bin/sh -c "ollama serve & sleep 2 && ollama create mistral-local -f Modelfile && tail -f /dev/null"
+    tty: true
+volumes:
+  ollama_data:

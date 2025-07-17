@@ -74,9 +74,9 @@ We adopt a baby-steps strategy with focus on:
 Step	What we do	What we mock
 * [x] (13/07/2025) Setup	Create modular structure + Docker	Use dummy for everything
 * [x] (13/07/2025) Upload & preview	
-* [ ] Upload Excel, read with Pandas, show preview	Skip schema inference logic
-* [ ] Schema inference	Detect column types, missing data, categories	Use static rules for types
-* [ ] Concentration analysis	Aggregate and calculate top 10/20/50% per period	Use one static period (e.g., year)
+* [x] (16/07/2025) Upload Excel, read with Pandas, show preview	Skip schema inference logic
+* [x] (16/07/2025) Schema inference	Detect column types, missing data, categories	Use static rules for types
+* [x] (16/07/2025) Concentration analysis	Aggregate and calculate top 10/20/50% per period	Use one static period (e.g., year)
 * [ ] Insight generation	Integrate with Ollama via API	Use static prompt/response
 * [ ] Export & audit	Save analysis and logs to CSV/JSON	Skip fancy formatting
 
@@ -101,37 +101,56 @@ docker-compose build
 ```bash
 docker-compose up app
 ```
+Access the app at: http://localhost:8501
+
+### Run the LLM server
+
+```bash
+docker-compose up llm
+```
+You can query the Ollama server at: http://localhost:11434
+It will load the model mistral-local defined in the Modelfile.
 
 ### Run tests:
 ```bash
 docker-compose run --rm tests
 ```
 
+### Clean Up (Optional)
+
+To remove unused images, containers, and volumes:
+
+```bash
+docker system prune -a --volumes
+```
+
 ## Project Structure
 ```
 investment_decisions_AI/
-├── app/
-│   └── streamlit_ui.py
-├── services/
-│   ├── ingestion.py
-│   ├── concentration_analysis.py
-│   └── insights_engine.py
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── logs/
-├── tests/
-│   ├── test1.py
-│   ├── test2.py
-│   └── ...
-├── requirements.txt
+├── docker-compose.yml
 ├── Dockerfile
-├── docker-compose.yml 
-└── README.md
+├── llm.Dockerfile
+├── main.py
+├── Modelfile
+├── README.md
+├── requirements.txt
+├── services
+│   ├── concentration.py
+│   ├── ingestion.py
+│   ├── __init__.py
+│   ├── profiling.py
+└── tests
+    ├── assets
+    │   ├── file_example_XLSX_100.xlsx
+    │   └── sample_utf8.csv
+    ├── test_concentration.py
+    └── test_streamlit.py
+
+
 ```
 
 # Progress Log
-DAY 1 – Setup & Foundation
+## DAY 1 – Setup & Foundation
  * Defined problem scope and ideal architecture based on the challenge prompt
  * Wrote full README with long-term vs POC architecture and development strategy
  * Created initial folder structure (app/, services/, data/, etc.)
@@ -142,4 +161,15 @@ DAY 1 – Setup & Foundation
         Learned limitations of testing file_uploader, switched to session-based assertions
  * Tested logic for upload and UI transitions
  * Started planning ingestion and normalization logic
+
+## DAY 2 – Concentration Analysis & Modularization
+ * Refactored codebase to modular architecture (services/ for all business logic)
+ * Implemented concentration_pivot function to compute bucket-vs-period analysis
+ * Validated logic against the challenge's reference example
+ * Developed dynamic column suggestion utility for time, categorical, and numeric axes
+ * Added clear docstrings and Pythonic best practices to all service functions
+ * Created unit tests for each service function
+ * Enabled parameterization of buckets and time granularity for future flexibility
+ * Documented progress, prepared for custom period combination and AI on next days
+
 
