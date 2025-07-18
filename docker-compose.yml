@@ -15,7 +15,7 @@ services:
     build: .
     volumes:
       - .:/app
-    command: pytest -s -vv tests/
+    command: pytest -W ignore::DeprecationWarning -s -vv tests/
     environment:
       - PYTHONPATH=/app
 

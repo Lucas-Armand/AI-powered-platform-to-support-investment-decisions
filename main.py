@@ -35,7 +35,7 @@ elif selected == "Data Overview":
             st.components.v1.html(html, height=1000, scrolling=True)
     else:
         st.info("No data to display. Please upload a file first.")
-        
+
 elif selected == "Analyze":
     st.title("Analyze: Concentration Analysis")
     df = st.session_state.get('df', None)

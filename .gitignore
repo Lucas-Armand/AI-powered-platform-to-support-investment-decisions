@@ -2,6 +2,7 @@
 *.pyc
 *.pyo
 *.pyd
+*.~lock*
 
 # Ignore __pycache__ directories
 __pycache__/
