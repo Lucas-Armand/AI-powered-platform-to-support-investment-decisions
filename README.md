@@ -1,5 +1,5 @@
 # AI powered platform to support investment decisions — Data Infrastructure & Analytics
-!(Demostration)[use.gif]
+![Demostration](https://github.com/Lucas-Armand/AI-powered-platform-to-support-investment-decisions/blob/main/use.gif)
 
 ## Problem Statement
 
