@@ -79,7 +79,7 @@ Step	What we do	What we mock
 * [x] (16/07/2025) Upload Excel, read with Pandas, show preview	Skip schema inference logic
 * [x] (16/07/2025) Schema inference	Detect column types, missing data, categories	Use static rules for types
 * [x] (16/07/2025) Concentration analysis	Aggregate and calculate top 10/20/50% per period	Use one static period (e.g., year)
-* [x] (18/07/2025)Insight generation	Integrate with Ollama via API	Use static prompt/response
+* [x] (18/07/2025) Insight generation	Integrate with Ollama via API	Use static prompt/response
 * [ ] ~~Export & audit	Save analysis and logs to CSV/JSON	Skip fancy formatting~~
 
 
