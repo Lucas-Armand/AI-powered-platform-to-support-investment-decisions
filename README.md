@@ -55,8 +55,8 @@ For the take-home POC, we simplify the ideal vision:
                     [Streamlit App]
                            │
      ┌─────────────────────┼──────────────────────┐
-     │                     │                      │
- [ingestion.py]    [concentration_analysis.py]   [insights_engine.py]
+     │                     │                      │ (async)
+ [ingestion.py]    [concentration.py]         [insights.py]
      │                     │                      │
      ▼                     ▼                      ▼
 [data/raw/]         [data/processed/]         [data/insights/]
@@ -67,7 +67,7 @@ For the take-home POC, we simplify the ideal vision:
 
 # Development Strategy: Critical First
 
-We adopt a baby-steps strategy with focus on:
+I adopt a baby-steps strategy with focus on:
 * Making the critical path work end-to-end
 * Mocking advanced features until the core is stable
 * Writing modular, testable components
@@ -79,15 +79,12 @@ Step	What we do	What we mock
 * [x] (16/07/2025) Upload Excel, read with Pandas, show preview	Skip schema inference logic
 * [x] (16/07/2025) Schema inference	Detect column types, missing data, categories	Use static rules for types
 * [x] (16/07/2025) Concentration analysis	Aggregate and calculate top 10/20/50% per period	Use one static period (e.g., year)
-* [ ] Insight generation	Integrate with Ollama via API	Use static prompt/response
-* [ ] Export & audit	Save analysis and logs to CSV/JSON	Skip fancy formatting
+* [x] (18/07/2025)Insight generation	Integrate with Ollama via API	Use static prompt/response
+* [ ] ~~Export & audit	Save analysis and logs to CSV/JSON	Skip fancy formatting~~
 
 
 # Docker Strategy
 * Main container runs the full Streamlit app:
--> app/
---> services/
---> data/ # Saves to
 localhost:8501
 
 * Second container runs Ollama with Mistral model
@@ -128,7 +125,7 @@ docker system prune -a --volumes
 
 ## Project Structure
 ```
-investment_decisions_AI/
+./
 ├── docker-compose.yml
 ├── Dockerfile
 ├── llm.Dockerfile
@@ -137,16 +134,20 @@ investment_decisions_AI/
 ├── README.md
 ├── requirements.txt
 ├── services
-│   ├── concentration.py
-│   ├── ingestion.py
-│   ├── __init__.py
-│   ├── profiling.py
+│   ├── concentration.py
+│   ├── ingestion.py
+│   ├── insights.py
+│   ├── profiling.py
+│   └── __init__.py
+├── temp
+│   └── suggestions/ # async LLM outputs
 └── tests
-    ├── assets
-    │   ├── file_example_XLSX_100.xlsx
-    │   └── sample_utf8.csv
+    ├── assets/
     ├── test_concentration.py
-    └── test_streamlit.py
+    ├── test_ingestion.py
+    ├── test_profiling.py
+    ├── test_streamlit.py
+    └── test_insights.py
 
 
 ```
@@ -174,4 +175,17 @@ investment_decisions_AI/
  * Enabled parameterization of buckets and time granularity for future flexibility
  * Documented progress, prepared for custom period combination and AI on next days
 
-
+## DAY 3 – LLM Integration & Async Insights
+* Added services/insights.py with analyze_columns_with_llm() that:
+  * builds a few-shot prompt from df.head(3)
+  * calls the Mistral model via Ollama
+  * parses JSON output (time/category/numeric columns + optional merge_code)
+  * applies merge_code in a lightweight sandbox
+*Implemented background thread that generates suggestions immediately after upload and stores them as JSON in temp/suggestions/{file_id}.json.
+* Streamlit “Analyze” page now:
+  * polls for the suggestion file,
+  * shows LLM Suggestion banner and LLM Advice rationale,
+  * pre-selects suggested columns in the UI,
+  * falls back if the LLM is offline.
+  * Wrote a little more pytest test_insights.py plus coverage for fallback mode.
+  * Updated README
